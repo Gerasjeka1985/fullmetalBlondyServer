@@ -1,6 +1,7 @@
 const Router = require("express");
 const router = new Router();
 const userController = require('../controllers/auth');
+const checkAuth = require("../middlewares/checkAuth");
 
 //register
 //http://localhost:9200/api/auth/register
@@ -12,7 +13,6 @@ router.post('/login', userController.login)
 
 //get me
 //http://localhost:9200/api/auth/me
-router.get('/me', userController.getMe)
+router.get('/me', checkAuth, userController.getMe)
 
 module.exports = router;
-//delete
