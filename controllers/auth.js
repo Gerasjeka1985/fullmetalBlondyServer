@@ -21,8 +21,16 @@ class UserController{
                 password: hashPassword
             })
 
+            const token = jwt.sign({
+                    id: newUser.id
+                },
+                process.env.JWT_SECRET,
+                {expiresIn: '2h'}
+            )
+
             res.json({
                 newUser,
+                token,
                 message: "Регистрация прошла успешно!"
             })
 
@@ -73,7 +81,7 @@ class UserController{
 
     async getMe(req, res){
         try{
-            const user = await User.findByPk(res.userId)
+            const user = await User.findByPk(req.userId)
 
             if(!user){
                 return res.json({
@@ -89,8 +97,8 @@ class UserController{
             )
 
             return res.json({
+                user,
                 token,
-                user
             })
 
         }catch (error){
